@@ -4,6 +4,7 @@
 const findInput = document.querySelector(".find-input")
 const replaceInput = document.querySelector(".replace-input")
 const replaceAllButton = document.querySelector(".replace-all-button")
+const replaceOneButton = document.querySelector('.replace-one-button');
 
 // The following variable holds your OUTER ARRAY of row elements.
 // Later you will need an OUTER LOOP to loop over the individual elements within
@@ -40,6 +41,32 @@ replaceAllButton.addEventListener('click', function() {
     }
 
     alert("Total number of cells changed from " + stringToFind + " to " + stringToReplace + " is " + changeCount + ".");
+})
+
+replaceOneButton.addEventListener('click', function() {
+    let cellElements = [];
+    let stringToFind = findInput.value;
+    let stringToReplace = replaceInput.value;
+    let replaceFound = false;
+
+   for (let rowCount = 0; rowCount < rowElements.length; rowCount++) {
+        cellElements = getCellElements(rowElements[rowCount]);
+        console.log(cellElements.length)
+        for (let cellCount = 0; cellCount < cellElements.length; cellCount++) {
+            console.log("row: " + rowCount + " cell: " + cellCount)
+            if (cellElements[cellCount].innerHTML.indexOf(stringToFind) > -1) {
+                cellElements[cellCount].innerHTML = cellElements[cellCount].innerHTML.replace(stringToFind, stringToReplace);
+                console.log("Cell changed to: " + cellElements[cellCount].innerHTML);
+                replaceFound = true;
+                break;
+            }
+            console.log(cellCount)
+        }
+        if (replaceFound === true) {
+            break;
+        }
+    }
+
 })
 // YOUR CODE GOES HERE
 
