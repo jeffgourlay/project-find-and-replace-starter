@@ -21,6 +21,7 @@ function getCellElements (currentRowElement) {
 
 replaceAllButton.addEventListener('click', function() {
     let cellElements = [];
+    let changeCount = 0;
     let stringToFind = findInput.value;
     let stringToReplace = replaceInput.value;
 
@@ -32,10 +33,13 @@ replaceAllButton.addEventListener('click', function() {
             if (cellElements[cellCount].innerHTML.indexOf(stringToFind) > -1) {
                 cellElements[cellCount].innerHTML = cellElements[cellCount].innerHTML.replace(stringToFind, stringToReplace);
                 console.log("Cell changed to: " + cellElements[cellCount].innerHTML);
+                changeCount++;
             }
             console.log(cellCount)
         }
     }
+
+    alert("Total number of cells changed from " + stringToFind + " to " + stringToReplace + " is " + changeCount + ".");
 })
 // YOUR CODE GOES HERE
 
