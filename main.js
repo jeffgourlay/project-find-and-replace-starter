@@ -19,7 +19,24 @@ function getCellElements (currentRowElement) {
     return currentRowElement.querySelectorAll(".cell")
 }
 
+replaceAllButton.addEventListener('click', function() {
+    let cellElements = [];
+    let stringToFind = findInput.value;
+    let stringToReplace = replaceInput.value;
 
+   for (let rowCount = 0; rowCount < rowElements.length; rowCount++) {
+        cellElements = getCellElements(rowElements[rowCount]);
+        console.log(cellElements.length)
+        for (let cellCount = 0; cellCount < cellElements.length; cellCount++) {
+            console.log("row: " + rowCount + " cell: " + cellCount)
+            if (cellElements[cellCount].innerHTML.indexOf(stringToFind) > -1) {
+                cellElements[cellCount].innerHTML = cellElements[cellCount].innerHTML.replace(stringToFind, stringToReplace);
+                console.log("Cell changed to: " + cellElements[cellCount].innerHTML);
+            }
+            console.log(cellCount)
+        }
+    }
+})
 // YOUR CODE GOES HERE
 
 
