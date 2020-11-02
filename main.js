@@ -1,6 +1,7 @@
 // You should NOT change the HTML or CSS in this project (at least until you reach
 // the bonus objectives). Focus on the JavaScript.
 
+const caseSensitiveBox = document.querySelector('.case-sensitive');
 const findInput = document.querySelector(".find-input")
 const replaceInput = document.querySelector(".replace-input")
 const replaceAllButton = document.querySelector(".replace-all-button")
@@ -11,36 +12,65 @@ const replaceOneButton = document.querySelector('.replace-one-button');
 // this array.
 const rowElements = document.querySelectorAll(".row")
 
-// When you call the function belwo, it will get and return an INNER ARRAY
-// containing the cell elements for a given row.
-// Call this function from WITHIN your row elements loop. Then you will, in turn,
-// need to loop over the resulting cell elements. But where should this whole
-// NESTED LOOP go? Think through the user's experience: when should WHAT happen? 
+function displayResultMessage(numberOfChanges, stringToFind, stringToReplace, caseSensitive) {
+    let messageString = "The number of changes ";
+
+    if (caseSensitive === false) { 
+        messageString += "(case insensitive) ";
+    }
+
+    messageString += " of " + stringToFind + " to " + stringToReplace + " is " + numberOfChanges + ".";
+
+    alert(messageString);
+}
+
 function getCellElements (currentRowElement) {
     return currentRowElement.querySelectorAll(".cell")
 }
 
+function searchStringFound(stringToSearch, stringToFind, caseSensitive) {
+    let stringFound = false;
+
+    if (caseSensitive === false) {
+        stringToSearch = stringToSearch.toLowerCase();
+        stringToFind = stringToFind.toLowerCase();
+    }
+
+    if (stringToSearch.indexOf(stringToFind) > -1) {
+        stringFound = true;
+    }
+
+    console.log("Case Sensitive = " + caseSensitive)
+    console.log(stringToSearch + " contains " + stringToFind + " = " + stringFound)
+    return stringFound;
+}
+
 replaceAllButton.addEventListener('click', function() {
-    let cellElements = [];
-    let changeCount = 0;
-    let stringToFind = findInput.value;
-    let stringToReplace = replaceInput.value;
+   let caseSensitive = caseSensitiveBox.checked;
+   let cellElements = [];
+   let changeCount = 0;
+   let stringToFind = findInput.value;
+   let stringToReplace = replaceInput.value;
 
    for (let rowCount = 0; rowCount < rowElements.length; rowCount++) {
         cellElements = getCellElements(rowElements[rowCount]);
         console.log(cellElements.length)
         for (let cellCount = 0; cellCount < cellElements.length; cellCount++) {
-            console.log("row: " + rowCount + " cell: " + cellCount)
-            if (cellElements[cellCount].innerHTML.indexOf(stringToFind) > -1) {
+            console.log(cellElements[cellCount].innerHTML, stringToFind, caseSensitive === true)
+            if (searchStringFound(cellElements[cellCount].innerHTML, stringToFind, caseSensitive === true) === true) {
                 cellElements[cellCount].innerHTML = cellElements[cellCount].innerHTML.replace(stringToFind, stringToReplace);
                 console.log("Cell changed to: " + cellElements[cellCount].innerHTML);
                 changeCount++;
+
+                // The following is in case there is more than one match per cell
+                //cellCount--;
             }
             console.log(cellCount)
         }
     }
 
-    alert("Total number of cells changed from " + stringToFind + " to " + stringToReplace + " is " + changeCount + ".");
+    //alert("Total number of cells changed from " + stringToFind + " to " + stringToReplace + " is " + changeCount + ".");
+    displayResultMessage(changeCount, stringToFind, stringToReplace, caseSensitive === true)
 })
 
 replaceOneButton.addEventListener('click', function() {
@@ -54,7 +84,7 @@ replaceOneButton.addEventListener('click', function() {
         console.log(cellElements.length)
         for (let cellCount = 0; cellCount < cellElements.length; cellCount++) {
             console.log("row: " + rowCount + " cell: " + cellCount)
-            if (cellElements[cellCount].innerHTML.indexOf(stringToFind) > -1) {
+            if (searchStringFound(cellElements[cellCount].innerHTML, stringToFind, caseSensitive === true) === true) {
                 cellElements[cellCount].innerHTML = cellElements[cellCount].innerHTML.replace(stringToFind, stringToReplace);
                 console.log("Cell changed to: " + cellElements[cellCount].innerHTML);
                 replaceFound = true;
